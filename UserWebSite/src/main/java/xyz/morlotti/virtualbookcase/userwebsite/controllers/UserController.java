@@ -9,10 +9,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import xyz.morlotti.virtualbookcase.userwebsite.beans.PreLoan;
 import xyz.morlotti.virtualbookcase.userwebsite.beans.User;
 import xyz.morlotti.virtualbookcase.userwebsite.MyFeignProxy;
 import xyz.morlotti.virtualbookcase.userwebsite.security.TokenUtils;
 import xyz.morlotti.virtualbookcase.userwebsite.beans.forms.FullUserInfo;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 public class UserController
@@ -22,6 +27,41 @@ public class UserController
 
 	@Autowired
 	TokenUtils tokenUtils;
+
+	Map<Integer, Integer> getLoanRanks(User user, Iterable<PreLoan> preLoans)
+	{
+		Map<Integer, Integer> result = new HashMap<>();
+
+		for(PreLoan myPreLoan: user.getPreLoans())
+		{
+			/*--------------------------------------------------------------------------------------------------------*/
+
+			int position = 1;
+
+			for(PreLoan otherPreLoan: preLoans)
+			{
+				if(otherPreLoan.getBookDescription().getId() == myPreLoan.getBookDescription().getId())
+				{
+					if(!otherPreLoan.getLogin().equals(user.getLogin()))
+					{
+						position++;
+					}
+					else
+					{
+						break;
+					}
+				}
+			}
+
+			/*--------------------------------------------------------------------------------------------------------*/
+
+			result.put(myPreLoan.getId(), position);
+
+			/*--------------------------------------------------------------------------------------------------------*/
+		}
+
+		return result;
+	}
 
 	@RequestMapping(value = "/user", method = RequestMethod.GET)
 	public String showUser(@CookieValue(TokenUtils.TOKEN_COOKIE_NAME) String token, Model model)
@@ -34,7 +74,10 @@ public class UserController
 		{
 			User user = feignProxy.getUser(token);
 
+			Map<Integer, Integer> loanRanks = getLoanRanks(user, feignProxy.listPreLoans(token));
+
 			model.addAttribute("user", user);
+			model.addAttribute("loanRanks", loanRanks);
 			model.addAttribute("show", "xxxx"); // "show" pour déplier l'utilisateur, "xxxx" (choisi arbitrairement) pour le cacher
 
 			return "user";
@@ -42,7 +85,7 @@ public class UserController
 		catch(Exception e)
 		{
 			model.addAttribute("messageType", "danger");
-			model.addAttribute("message", "Impossible de récupérer les informations de l'utilisateur.");
+			model.addAttribute("message", "Impossible de récupérer les informations de l'utilisateur. " + e.getMessage());
 
 			return "error";
 		}
@@ -72,7 +115,10 @@ public class UserController
 
 			User user = feignProxy.getUser(token);
 
+			Map<Integer, Integer> loanRanks = getLoanRanks(user, feignProxy.listPreLoans(token));
+
 			model.addAttribute("user", user);
+			model.addAttribute("loanRanks", loanRanks);
 			model.addAttribute("show", "xxxx"); // "show" pour déplier l'utilisateur, "xxxx" (choisi arbitrairement) pour le cacher
 
 			return "user";
@@ -80,7 +126,7 @@ public class UserController
 		catch(Exception e)
 		{
 			model.addAttribute("messageType", "danger");
-			model.addAttribute("message", "Impossible de récupérer les informations de l'utilisateur.");
+			model.addAttribute("message", "Impossible de récupérer les informations de l'utilisateur. " + e.getMessage());
 
 			return "error";
 		}
@@ -108,7 +154,10 @@ public class UserController
 			user.setEmail(fullUserInfo.getEmail());
 			user.setSex(fullUserInfo.getSex());
 
+			Map<Integer, Integer> loanRanks = getLoanRanks(user, feignProxy.listPreLoans(token));
+
 			model.addAttribute("user", user);
+			model.addAttribute("loanRanks", loanRanks);
 			model.addAttribute("show", "show"); // "show" pour déplier l'utilisateur, "xxxx" (choisi arbitrairement) pour le cacher
 
 			try
@@ -129,7 +178,7 @@ public class UserController
 		catch(Exception e)
 		{
 			model.addAttribute("messageType", "danger");
-			model.addAttribute("message", "Impossible de récupérer les informations de l'utilisateur.");
+			model.addAttribute("message", "Impossible de récupérer les informations de l'utilisateur. " + e.getMessage());
 
 			return "error";
 		}

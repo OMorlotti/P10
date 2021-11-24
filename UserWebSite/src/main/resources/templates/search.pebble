@@ -99,8 +99,8 @@
 					<td>{{ searchResult.bookDescription.authorFirstname }} {{ searchResult.bookDescription.authorLastname }}</td>
 					<td>
 					    <span class="badge badge-success">{{ searchResult.nbAvailable }}</span>
-					    {% if (searchResult.nbAvailable == 0) and (searchResult.nbNotAvailable > 0) and not (bookDescriptionIdSet contains searchResult.bookDescription.id) %}
-					        <button type="button" class="btn btn-sm btn-primary">Pré-réserver</button>
+					    {% if (searchResult.nbAvailable == 0) and (searchResult.bookDescription.numberOfPreLoans < 2 * searchResult.bookDescription.numberOfBooks) %}
+					        <button type="button" class="btn btn-sm btn-primary"{% if bookDescriptionIdSet contains searchResult.bookDescription.id %} disabled="disabled"{% endif %}>Pré-réserver ({{ searchResult.bookDescription.numberOfPreLoans }} déjà)</button>
 					    {% endif %}
 					</td>
 					<td><span class="badge badge-danger">{{ searchResult.nbNotAvailable }}</span></td>

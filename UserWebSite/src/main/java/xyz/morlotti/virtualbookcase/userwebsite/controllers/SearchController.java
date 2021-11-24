@@ -54,9 +54,20 @@ public class SearchController
 		{
 			Iterable<SearchResult> searchResults = feignProxy.searchBook(search);
 
-			Set<Integer> bookDescriptionIdSet = (userInfo != null) ? feignProxy.getUser(token).getLoans().stream().map(loan -> loan.getBook().getBookDescription().getId()).collect(Collectors.toSet())
-			                                                       : new HashSet<>()
-			;
+			Set<Integer> bookDescriptionIdSet = new HashSet<>();
+
+			if(userInfo != null)
+			{
+				feignProxy.getUser(token).getLoans().stream().forEach(x -> {
+
+					bookDescriptionIdSet.add(x.getBook().getBookDescription().getId());
+				});
+
+				feignProxy.getUser(token).getPreLoans().stream().forEach(x -> {
+
+					bookDescriptionIdSet.add(x.getBookDescription().getId());
+				});
+			}
 
 			model.addAttribute("searchResults", searchResults);
 			model.addAttribute("bookDescriptionIdSet", bookDescriptionIdSet);

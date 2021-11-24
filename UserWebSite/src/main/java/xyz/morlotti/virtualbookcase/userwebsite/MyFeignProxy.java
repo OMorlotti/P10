@@ -6,6 +6,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 
 import xyz.morlotti.virtualbookcase.userwebsite.beans.Book;
 import xyz.morlotti.virtualbookcase.userwebsite.beans.User;
+import xyz.morlotti.virtualbookcase.userwebsite.beans.PreLoan;
 import xyz.morlotti.virtualbookcase.userwebsite.beans.forms.Search;
 import xyz.morlotti.virtualbookcase.userwebsite.security.TokenUtils;
 import xyz.morlotti.virtualbookcase.userwebsite.beans.BookDescription;
@@ -43,4 +44,9 @@ public interface MyFeignProxy
 
 	@PutMapping("/loan/{id}/extend")
 	public ResponseEntity<Void> extendLoan(@RequestHeader(TokenUtils.TOKEN_HEADER_NAME) String token, @PathVariable("id") int id);
+
+	/**/
+
+	@GetMapping("/preloans")
+	public Iterable<PreLoan> listPreLoans(@RequestHeader(TokenUtils.TOKEN_HEADER_NAME) String token);
 }
