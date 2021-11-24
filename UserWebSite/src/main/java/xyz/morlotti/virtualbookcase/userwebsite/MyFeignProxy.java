@@ -11,7 +11,7 @@ import xyz.morlotti.virtualbookcase.userwebsite.security.TokenUtils;
 import xyz.morlotti.virtualbookcase.userwebsite.beans.BookDescription;
 import xyz.morlotti.virtualbookcase.userwebsite.beans.forms.SearchResult;
 
-@FeignClient(name = "myFeignProxy", url = "localhost:9090")
+@FeignClient(name = "myFeignProxy", url = "192.168.0.78:9090")
 public interface MyFeignProxy
 {
 	@GetMapping("/auth/login")

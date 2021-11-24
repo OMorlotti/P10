@@ -190,6 +190,10 @@ public class User implements java.io.Serializable
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     private Set<Loan> loans;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    private Set<PreLoan> preLoans;
+
     ////////
 
     public String getPassword()

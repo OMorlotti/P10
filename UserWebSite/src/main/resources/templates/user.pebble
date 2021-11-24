@@ -11,7 +11,7 @@
     }
 </script>
 
-<form class="card mt-0" action="{{ href('/user') }}" method="POST">
+<form class="card mb-2" action="{{ href('/user') }}" method="POST">
     <h3 class="card-header" data-toggle="collapse" data-target="#collapseOne">{{ user.firstname }} {{ user.lastname }} <small>(cliquer pour voir les détails)</small></h3>
     <div class="card-body collapse {{ show }}" id="collapseOne">
         <table class="table table-sm table-strip">
@@ -96,7 +96,7 @@
     </div>
 </form>
 
-<div class="card mt-2">
+<div class="card mb-2">
     <h3 class="card-header" data-toggle="collapse" data-target="#collapseTwo">Mes prêts</h3>
     <div class="card-body collapse show" id="collapseTwo">
     	<table class="table table-sm">

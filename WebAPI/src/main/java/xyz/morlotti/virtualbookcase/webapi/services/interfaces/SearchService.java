@@ -5,5 +5,5 @@ import xyz.morlotti.virtualbookcase.webapi.daos.beans.SearchResult;
 
 public interface SearchService
 {
-	public Iterable<SearchResult> search(Search search);
+	Iterable<SearchResult> search(Search search);
 }

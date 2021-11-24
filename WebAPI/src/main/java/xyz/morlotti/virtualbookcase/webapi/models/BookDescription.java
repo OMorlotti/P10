@@ -78,4 +78,8 @@ public class BookDescription implements java.io.Serializable
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "bookDescription")
     private Set<Book> books;
+
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "bookDescription")
+    private Set<PreLoan> preLoans;
 }

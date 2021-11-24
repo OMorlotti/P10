@@ -9,9 +9,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import xyz.morlotti.virtualbookcase.userwebsite.MyFeignProxy;
+import xyz.morlotti.virtualbookcase.userwebsite.beans.BookDescription;
+import xyz.morlotti.virtualbookcase.userwebsite.beans.Loan;
+import xyz.morlotti.virtualbookcase.userwebsite.beans.User;
 import xyz.morlotti.virtualbookcase.userwebsite.beans.forms.Search;
 import xyz.morlotti.virtualbookcase.userwebsite.security.TokenUtils;
 import xyz.morlotti.virtualbookcase.userwebsite.beans.forms.SearchResult;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 public class SearchController
@@ -45,7 +54,13 @@ public class SearchController
 		{
 			Iterable<SearchResult> searchResults = feignProxy.searchBook(search);
 
+			Set<Integer> bookDescriptionIdSet = (userInfo != null) ? feignProxy.getUser(token).getLoans().stream().map(loan -> loan.getBook().getBookDescription().getId()).collect(Collectors.toSet())
+			                                                       : new HashSet<>()
+			;
+
 			model.addAttribute("searchResults", searchResults);
+			model.addAttribute("bookDescriptionIdSet", bookDescriptionIdSet);
+
 		}
 		catch(Exception e)
 		{
