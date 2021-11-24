@@ -137,4 +137,33 @@
 		</table>
     </div>
 </div>
+
+<div class="card mb-2">
+    <h3 class="card-header" data-toggle="collapse" data-target="#collapseThree">Mes pré-réservations</h3>
+    <div class="card-body collapse xxxx" id="collapseThree">
+    	<table class="table table-sm">
+    		<thead>
+				<tr>
+					<td>Titre du livre</a></td>
+					<td>Date de pré-réservation</td>
+                    <td>Date d'expiration</td>
+                    <td>Position dans la liste d'attente</td>
+					<td>Annuler</td>
+				</tr>
+    		</thead>
+    		<tbody>
+			    {% for preLoan in user.preLoans|sort %}
+                    <td><a href="{{ href("/bookDescription/" + preLoan.bookDescription.id) }}" target="_blank">{{ preLoan.bookDescription.title }}</a></td>
+                    <td>{{ preLoan.preLoanStartDate | date("dd/MM/yyyy") }}</td>
+                    <td>{{ preLoan.preLoanExpiryDate | date("dd/MM/yyyy") }}</td>
+                    <td>{{ 0 }}</td>
+                    <td class="text-center">
+                        <button type="button" class="btn btn-sm btn-danger">
+                            🗑
+                        </button>
+                    </td>
+			    {% endfor %}
+			</tbody>
+		</table>
+    </div>
 {% endblock %}

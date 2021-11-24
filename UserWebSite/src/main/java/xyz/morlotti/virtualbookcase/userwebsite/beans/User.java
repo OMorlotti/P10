@@ -48,4 +48,7 @@ public class User implements java.io.Serializable
      ////////
 
      private List<Loan> loans;
+
+     private List<PreLoan> preLoans;
+
 }

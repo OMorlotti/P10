@@ -97,7 +97,12 @@
 				<tr>
 					<td><a href="{{ href("/bookDescription/" + searchResult.bookDescription.id) }}" target="_blank">★ {{ searchResult.bookDescription.title }}</a></td>
 					<td>{{ searchResult.bookDescription.authorFirstname }} {{ searchResult.bookDescription.authorLastname }}</td>
-					<td><span class="badge badge-success">{{ searchResult.nbAvailable }}</span></td>
+					<td>
+					    <span class="badge badge-success">{{ searchResult.nbAvailable }}</span>
+					    {% if (searchResult.nbAvailable == 0) and (searchResult.nbNotAvailable > 0) and not (bookDescriptionIdSet contains searchResult.bookDescription.id) %}
+					        <button type="button" class="btn btn-sm btn-primary">Pré-réserver</button>
+					    {% endif %}
+					</td>
 					<td><span class="badge badge-danger">{{ searchResult.nbNotAvailable }}</span></td>
     			</tr>
 				{% endfor %}
