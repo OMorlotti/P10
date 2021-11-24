@@ -84,6 +84,18 @@ public class Loan implements java.io.Serializable
         }
     }
 
+    public LocalDate getReturnDate()
+    {
+        if(extensionAsked)
+        {
+            return loanStartDate.plusDays(60);
+        }
+        else
+        {
+            return loanStartDate.plusDays(30);
+        }
+    }
+
     public long getRemainingDays()
     {
         if(extensionAsked)
@@ -93,18 +105,6 @@ public class Loan implements java.io.Serializable
         else
         {
             return DAYS.between(LocalDate.now(), loanStartDate.plusDays(30));
-        }
-    }
-
-    public LocalDate getReturnDate()
-    {
-        if(extensionAsked)
-        {
-            return loanStartDate.plusDays(60);
-       }
-        else
-        {
-            return loanStartDate.plusDays(30);
         }
     }
 

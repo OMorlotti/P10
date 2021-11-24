@@ -79,7 +79,19 @@ public class BookDescription implements java.io.Serializable
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "bookDescription")
     private Set<Book> books;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    int getNumberOfBooks()
+    {
+        return books.size();
+    }
+
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "bookDescription")
     private Set<PreLoan> preLoans;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    int getNumberOfPreLoans()
+    {
+        return preLoans.size();
+    }
 }

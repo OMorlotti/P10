@@ -37,26 +37,6 @@ public class PreLoan implements java.io.Serializable
 	@Column(name = "preLoanStartDate", nullable = false)
 	private LocalDate preLoanStartDate;
 
-	public long getRemainingDays()
-	{
-		DayOfWeek dayOfWeek = LocalDate.now().getDayOfWeek();
-
-		/**/ if(dayOfWeek == DayOfWeek.FRIDAY
-		        ||
-		        dayOfWeek == DayOfWeek.SATURDAY
-		 ) {
-			return DAYS.between(LocalDate.now(), preLoanStartDate.plusDays(2 + 2));
-		}
-		else if(dayOfWeek == DayOfWeek.SUNDAY)
-		{
-			return DAYS.between(LocalDate.now(), preLoanStartDate.plusDays(2 + 1));
-		}
-		else
-		{
-			return DAYS.between(LocalDate.now(), preLoanStartDate.plusDays(2 + 0));
-		}
-	}
-
 	public LocalDate getPreLoanExpiryDate()
 	{
 		DayOfWeek dayOfWeek = LocalDate.now().getDayOfWeek();
@@ -74,6 +54,26 @@ public class PreLoan implements java.io.Serializable
 		else
 		{
 			return preLoanStartDate.plusDays(2 + 0);
+		}
+	}
+
+	public long getRemainingDays()
+	{
+		DayOfWeek dayOfWeek = LocalDate.now().getDayOfWeek();
+
+		/**/ if(dayOfWeek == DayOfWeek.FRIDAY
+		        ||
+		        dayOfWeek == DayOfWeek.SATURDAY
+		 ) {
+			return DAYS.between(LocalDate.now(), preLoanStartDate.plusDays(2 + 2));
+		}
+		else if(dayOfWeek == DayOfWeek.SUNDAY)
+		{
+			return DAYS.between(LocalDate.now(), preLoanStartDate.plusDays(2 + 1));
+		}
+		else
+		{
+			return DAYS.between(LocalDate.now(), preLoanStartDate.plusDays(2 + 0));
 		}
 	}
 

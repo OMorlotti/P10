@@ -27,7 +27,7 @@ public class PreLoanServiceImpl implements PreLoanService
 
 	public Iterable<PreLoan> listPreLoans()
 	{
-		Iterable<PreLoan> preLoans = preLoanDAO.findAll();
+		Iterable<PreLoan> preLoans = preLoanDAO.findByOrderByPreLoanStartDateAsc();
 
 		return preLoans;
 	}

@@ -38,7 +38,7 @@ public class BookDescription implements java.io.Serializable
 
      ////////
 
-     private List<Book> books;
+     private Integer numberOfBooks;
 
-     private List<PreLoan> preLoans;
+     private Integer numberOfPreLoans;
 }

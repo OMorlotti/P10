@@ -22,4 +22,8 @@ public class PreLoan
 	private LocalDate preLoanExpiryDate;
 
 	private Integer remainingDays;
+
+	private String login;
+
+	private String email;
 }
