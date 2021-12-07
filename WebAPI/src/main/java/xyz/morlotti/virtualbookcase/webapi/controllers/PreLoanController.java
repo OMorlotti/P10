@@ -1,6 +1,7 @@
 package xyz.morlotti.virtualbookcase.webapi.controllers;
 
 import java.net.URI;
+import java.util.Collection;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
@@ -8,11 +9,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import xyz.morlotti.virtualbookcase.webapi.models.PreLoan;
 import xyz.morlotti.virtualbookcase.webapi.exceptions.APINotFoundException;
+import xyz.morlotti.virtualbookcase.webapi.models.User;
 import xyz.morlotti.virtualbookcase.webapi.security.services.UserDetailsImpl;
 import xyz.morlotti.virtualbookcase.webapi.services.interfaces.PreLoanService;
 import xyz.morlotti.virtualbookcase.webapi.exceptions.APINotAuthorizedException;
@@ -31,7 +34,7 @@ public class PreLoanController
 	}
 
 	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('EMPLOYEE') or hasAuthority('USER')")
-	@RequestMapping(value = "/preloan", method = RequestMethod.POST)
+	@RequestMapping(value = "/preloan/bookDescription/{bookDescriptionId}", method = RequestMethod.POST)
 	public ResponseEntity<Void> addPreLoanCurrentUser(@PathVariable("bookDescriptionId") int bookDescriptionId, Authentication authentication)
 	{
 		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
@@ -40,7 +43,7 @@ public class PreLoanController
 	}
 
 	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('EMPLOYEE')")
-	@RequestMapping(value = "/preloan", method = RequestMethod.POST)
+	@RequestMapping(value = "/preloan/bookDescription/{bookDescriptionId}/user/{userId}", method = RequestMethod.POST)
 	public ResponseEntity<Void> addPreLoan(@PathVariable("bookDescriptionId") int bookDescriptionId, @PathVariable("userId") int userId)
 	{
 		PreLoan newPreLoan = preLoanService.addPreLoan(bookDescriptionId, userId);
@@ -56,30 +59,26 @@ public class PreLoanController
 	}
 
 	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('EMPLOYEE') or hasAuthority('USER')")
-	@RequestMapping(value = "/loan/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> deletePreLoanCurrentUser(@PathVariable("id") int id, Authentication authentication)
+	@RequestMapping(value = "/preloan/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<Void> deletePreLoan(@PathVariable("id") int id, Authentication authentication)
 	{
 		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-		Optional<PreLoan> optional = preLoanService.getPreLoan(id);
-
-		if(!optional.isPresent())
+		if(userDetails.getAuthority() == User.Role.USER)
 		{
-			throw new APINotFoundException("cannot find preloan '" + id + "'");
+			Optional<PreLoan> optional = preLoanService.getPreLoan(id);
+
+			if(!optional.isPresent())
+			{
+				throw new APINotFoundException("cannot find preloan '" + id + "'");
+			}
+
+			if(optional.get().getUser().getId() != userDetails.getId())
+			{
+				throw new APINotAuthorizedException("not authorized to cancel preloan '" + id + "'");
+			}
 		}
 
-		if(optional.get().getUser().getId() != userDetails.getId())
-		{
-			throw new APINotAuthorizedException("not authorized to cancel preloan '" + id + "'");
-		}
-
-		return deletePreLoan(id, authentication);
-	}
-
-	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('EMPLOYEE')")
-	@RequestMapping(value = "/loan/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> deletePreLoan(@PathVariable("id") int id, Authentication authentication)
-	{
 		preLoanService.deletePreLoan(id);
 
 		return ResponseEntity.status(HttpStatus.OK).build();

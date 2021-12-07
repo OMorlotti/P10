@@ -49,4 +49,7 @@ public interface MyFeignProxy
 
 	@GetMapping("/preloans")
 	public Iterable<PreLoan> listPreLoans(@RequestHeader(TokenUtils.TOKEN_HEADER_NAME) String token);
+
+	@PostMapping("/preloan/bookDescription/{bookDescriptionId}")
+	public ResponseEntity<Void> addPreloan(@RequestHeader(TokenUtils.TOKEN_HEADER_NAME) String token, @PathVariable("bookDescriptionId") int bookDescriptionId);
 }

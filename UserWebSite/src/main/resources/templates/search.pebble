@@ -100,7 +100,7 @@
 					<td>
 					    <span class="badge badge-success">{{ searchResult.nbAvailable }}</span>
 					    {% if (searchResult.nbAvailable == 0) and (searchResult.bookDescription.numberOfPreLoans < 2 * searchResult.bookDescription.numberOfBooks) %}
-					        <button type="button" class="btn btn-sm btn-primary"{% if bookDescriptionIdSet contains searchResult.bookDescription.id %} disabled="disabled"{% endif %}>Pré-réserver ({{ searchResult.bookDescription.numberOfPreLoans }} déjà)</button>
+					        <button class="btn btn-sm btn-primary" onclick="preLoan(this, '{{ searchResult.bookDescription.id }}');"{% if bookDescriptionIdSet contains searchResult.bookDescription.id %} disabled="disabled"{% endif %}>Pré-réserver ({{ searchResult.bookDescription.numberOfPreLoans }} déjà)</button>
 					    {% endif %}
 					</td>
 					<td><span class="badge badge-danger">{{ searchResult.nbNotAvailable }}</span></td>
@@ -116,4 +116,22 @@
 </div>
 {%   endif %}
 {% endif %}
+
+<script>
+
+function preLoan(button, bookDescriptionId)
+{
+    $.ajax({
+        url: '/preloan/' + bookDescriptionId,
+        method: 'POST'
+    }).done(() => {
+        $(button).prop('disabled', true);
+        alert('Pré-réservé !');
+    }).fail(() => {
+        $(button).prop('disabled', false);
+        alert('Erreur !');
+    });
+}
+
+</script>
 {% endblock %}
