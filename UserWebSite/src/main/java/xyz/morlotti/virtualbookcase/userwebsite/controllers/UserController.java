@@ -1,5 +1,8 @@
 package xyz.morlotti.virtualbookcase.userwebsite.controllers;
 
+import java.util.Map;
+import java.util.HashMap;
+
 import org.springframework.ui.Model;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -9,15 +12,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import xyz.morlotti.virtualbookcase.userwebsite.beans.PreLoan;
 import xyz.morlotti.virtualbookcase.userwebsite.beans.User;
 import xyz.morlotti.virtualbookcase.userwebsite.MyFeignProxy;
+import xyz.morlotti.virtualbookcase.userwebsite.beans.PreLoan;
 import xyz.morlotti.virtualbookcase.userwebsite.security.TokenUtils;
 import xyz.morlotti.virtualbookcase.userwebsite.beans.forms.FullUserInfo;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Controller
 public class UserController

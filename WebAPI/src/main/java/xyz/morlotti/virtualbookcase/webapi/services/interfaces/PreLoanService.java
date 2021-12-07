@@ -1,18 +1,16 @@
 package xyz.morlotti.virtualbookcase.webapi.services.interfaces;
 
-import xyz.morlotti.virtualbookcase.webapi.models.PreLoan;
-
 import java.util.Optional;
+
+import xyz.morlotti.virtualbookcase.webapi.models.PreLoan;
 
 public interface PreLoanService
 {
 	Iterable<PreLoan> listPreLoans();
 
-	Optional<PreLoan> getLoan(int id);
+	Optional<PreLoan> getPreLoan(int id);
 
-	PreLoan addPreLoan(PreLoan preLoan);
+	PreLoan addPreLoan(int bookDescriptionId, int userId);
 
-	PreLoan updateLoan(int id, PreLoan loan);
-
-	void deleteLoan(int id);
+	void deletePreLoan(int id);
 }

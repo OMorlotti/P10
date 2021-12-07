@@ -80,7 +80,7 @@ public class BookDescription implements java.io.Serializable
     private Set<Book> books;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    int getNumberOfBooks()
+    public int getNumberOfBooks()
     {
         return books.size();
     }
@@ -90,7 +90,7 @@ public class BookDescription implements java.io.Serializable
     private Set<PreLoan> preLoans;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    int getNumberOfPreLoans()
+    public int getNumberOfPreLoans()
     {
         return preLoans.size();
     }

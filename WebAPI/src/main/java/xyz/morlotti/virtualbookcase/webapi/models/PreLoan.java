@@ -39,7 +39,7 @@ public class PreLoan implements java.io.Serializable
 
 	public LocalDate getPreLoanExpiryDate()
 	{
-		DayOfWeek dayOfWeek = LocalDate.now().getDayOfWeek();
+		DayOfWeek dayOfWeek = preLoanStartDate.getDayOfWeek();
 
 		/**/ if(dayOfWeek == DayOfWeek.FRIDAY
 		        ||
@@ -59,22 +59,7 @@ public class PreLoan implements java.io.Serializable
 
 	public long getRemainingDays()
 	{
-		DayOfWeek dayOfWeek = LocalDate.now().getDayOfWeek();
-
-		/**/ if(dayOfWeek == DayOfWeek.FRIDAY
-		        ||
-		        dayOfWeek == DayOfWeek.SATURDAY
-		 ) {
-			return DAYS.between(LocalDate.now(), preLoanStartDate.plusDays(2 + 2));
-		}
-		else if(dayOfWeek == DayOfWeek.SUNDAY)
-		{
-			return DAYS.between(LocalDate.now(), preLoanStartDate.plusDays(2 + 1));
-		}
-		else
-		{
-			return DAYS.between(LocalDate.now(), preLoanStartDate.plusDays(2 + 0));
-		}
+		return DAYS.between(getPreLoanExpiryDate(), LocalDate.now());
 	}
 
 	public String getLogin() // getUser() is not present in the JSON for avoiding recursivity error
