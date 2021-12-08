@@ -1,4 +1,4 @@
-package xyz.morlotti.virtualbookcase.userwebsite.beans;
+package xyz.morlotti.virtualbookcase.batch.beans;
 
 import lombok.*;
 
