@@ -1,5 +1,6 @@
 package xyz.morlotti.virtualbookcase.userwebsite.beans;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Date;
 
@@ -41,4 +42,6 @@ public class BookDescription implements java.io.Serializable
      private Integer numberOfBooks;
 
      private Integer numberOfPreLoans;
+
+     private LocalDate nextAvailabilityDate;
 }

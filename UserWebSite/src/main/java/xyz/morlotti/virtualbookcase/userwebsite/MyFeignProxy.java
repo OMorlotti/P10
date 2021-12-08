@@ -16,40 +16,43 @@ import xyz.morlotti.virtualbookcase.userwebsite.beans.forms.SearchResult;
 public interface MyFeignProxy
 {
 	@GetMapping("/auth/login")
-	public String login(@RequestParam("login") String login, @RequestParam("password") String password);
+	String login(@RequestParam("login") String login, @RequestParam("password") String password);
 
 	@GetMapping("/auth/remind-password")
-	public ResponseEntity<Void> remindPassword(@RequestParam("email") String email);
+	ResponseEntity<Void> remindPassword(@RequestParam("email") String email);
 
 	/**/
 
 	@GetMapping("/book/{id}")
-	public Book getBook(@PathVariable("id") int id);
+	Book getBook(@PathVariable("id") int id);
 
 	@GetMapping("/bookDescription/{id}")
-	public BookDescription getBookDescription(@PathVariable("id") int id);
+	BookDescription getBookDescription(@PathVariable("id") int id);
 
 	/**/
 
 	@PostMapping("/book/search")
-	public Iterable<SearchResult> searchBook(@RequestBody Search search);
+	Iterable<SearchResult> searchBook(@RequestBody Search search);
 
 	/**/
 
 	@GetMapping("/user")
-	public User getUser(@RequestHeader(TokenUtils.TOKEN_HEADER_NAME) String token);
+	User getUser(@RequestHeader(TokenUtils.TOKEN_HEADER_NAME) String token);
 
 	@PutMapping("/user")
-	public ResponseEntity<Void> updateUser(@RequestHeader(TokenUtils.TOKEN_HEADER_NAME) String token, @RequestBody User user);
+	ResponseEntity<Void> updateUser(@RequestHeader(TokenUtils.TOKEN_HEADER_NAME) String token, @RequestBody User user);
 
 	@PutMapping("/loan/{id}/extend")
-	public ResponseEntity<Void> extendLoan(@RequestHeader(TokenUtils.TOKEN_HEADER_NAME) String token, @PathVariable("id") int id);
+	ResponseEntity<Void> extendLoan(@RequestHeader(TokenUtils.TOKEN_HEADER_NAME) String token, @PathVariable("id") int id);
 
 	/**/
 
 	@GetMapping("/preloans")
-	public Iterable<PreLoan> listPreLoans(@RequestHeader(TokenUtils.TOKEN_HEADER_NAME) String token);
+	Iterable<PreLoan> listPreLoans(@RequestHeader(TokenUtils.TOKEN_HEADER_NAME) String token);
 
 	@PostMapping("/preloan/bookDescription/{bookDescriptionId}")
-	public ResponseEntity<Void> addPreloan(@RequestHeader(TokenUtils.TOKEN_HEADER_NAME) String token, @PathVariable("bookDescriptionId") int bookDescriptionId);
+	ResponseEntity<Void> addPreloan(@RequestHeader(TokenUtils.TOKEN_HEADER_NAME) String token, @PathVariable("bookDescriptionId") int bookDescriptionId);
+
+	@DeleteMapping("/preloan/{id}")
+	ResponseEntity<Void> deletePreLoan(@RequestHeader(TokenUtils.TOKEN_HEADER_NAME) String token, @PathVariable("id") int id);
 }

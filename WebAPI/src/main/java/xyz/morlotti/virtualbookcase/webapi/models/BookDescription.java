@@ -1,5 +1,6 @@
 package xyz.morlotti.virtualbookcase.webapi.models;
 
+import java.time.LocalDate;
 import java.util.Set;
 import java.util.Date;
 
@@ -93,5 +94,26 @@ public class BookDescription implements java.io.Serializable
     public int getNumberOfPreLoans()
     {
         return preLoans.size();
+    }
+
+    ////////
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    public LocalDate getNextAvailabilityDate()
+    {
+        LocalDate result = LocalDate.MAX;
+
+        for(Book book: this.books)
+        {
+            for(Loan loan: book.getLoans())
+            {
+                if(result.isAfter(loan.getReturnDate()))
+                {
+                    result = loan.getReturnDate();
+                }
+            }
+        }
+
+        return result;
     }
 }

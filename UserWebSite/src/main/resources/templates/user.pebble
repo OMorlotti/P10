@@ -153,17 +153,41 @@
     		</thead>
     		<tbody>
 			    {% for preLoan in user.preLoans|sort %}
+			    <tr>
                     <td><a href="{{ href("/bookDescription/" + preLoan.bookDescription.id) }}" target="_blank">{{ preLoan.bookDescription.title }}</a></td>
                     <td>{{ preLoan.preLoanStartDate | date("dd/MM/yyyy") }}</td>
                     <td>{{ preLoan.preLoanExpiryDate | date("dd/MM/yyyy") }}</td>
                     <td>{{ loanRanks[preLoan.id] }} / {{ preLoan.bookDescription.numberOfPreLoans }}</td>
                     <td class="text-center">
-                        <button type="button" class="btn btn-sm btn-outline-danger">
+                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="removePreLoan(this, '{{ preLoan.id }}');">
                             🗑
                         </button>
                     </td>
+                </tr>
 			    {% endfor %}
 			</tbody>
 		</table>
     </div>
+</div>
+
+<script>
+
+function removePreLoan(button, preLoanId)
+{
+    if(!confirm('Supprimer la pré-réservation ?'))
+    {
+        return;
+    }
+
+    $.ajax({
+        url: '/preloan/' + preLoanId,
+        method: 'DELETE'
+    }).done(() => {
+        $(button).closest('tr').remove();
+        alert('Pré-réservation supprimée !');
+    }).fail(() => {
+        alert('Erreur !');
+    });
+}
+</script>
 {% endblock %}

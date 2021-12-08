@@ -100,7 +100,11 @@
 					<td>
 					    <span class="badge badge-success">{{ searchResult.nbAvailable }}</span>
 					    {% if (searchResult.nbAvailable == 0) and (searchResult.bookDescription.numberOfPreLoans < 2 * searchResult.bookDescription.numberOfBooks) %}
-					        <button class="btn btn-sm btn-primary" onclick="preLoan(this, '{{ searchResult.bookDescription.id }}');"{% if bookDescriptionIdSet contains searchResult.bookDescription.id %} disabled="disabled"{% endif %}>Pré-réserver ({{ searchResult.bookDescription.numberOfPreLoans }} déjà)</button>
+					    <button class="btn btn-sm btn-primary" onclick="addPreLoan(this, '{{ searchResult.bookDescription.id }}');"{% if bookDescriptionIdSet contains searchResult.bookDescription.id %} disabled="disabled"{% endif %}>
+					        Pré-réserver ({{ searchResult.bookDescription.numberOfPreLoans }} déjà)
+					        <br />
+					        retour le {{ searchResult.bookDescription.nextAvailabilityDate|date('dd-MM-yyyy') }}
+					    </button>
 					    {% endif %}
 					</td>
 					<td><span class="badge badge-danger">{{ searchResult.nbNotAvailable }}</span></td>
@@ -119,16 +123,20 @@
 
 <script>
 
-function preLoan(button, bookDescriptionId)
+function addPreLoan(button, bookDescriptionId)
 {
+    if(!confirm('Confirmer la pré-réservation ?'))
+    {
+        return;
+    }
+
     $.ajax({
         url: '/preloan/' + bookDescriptionId,
         method: 'POST'
     }).done(() => {
         $(button).prop('disabled', true);
-        alert('Pré-réservé !');
+        alert('Pré-réservation effectuée !');
     }).fail(() => {
-        $(button).prop('disabled', false);
         alert('Erreur !');
     });
 }

@@ -13,9 +13,15 @@ public class PreLoanController
 	@Autowired
 	MyFeignProxy feignProxy;
 
-	@RequestMapping(value = "/preloan", method = RequestMethod.POST)
+	@RequestMapping(value = "/preloan/{bookDescriptionId}", method = RequestMethod.POST)
 	public ResponseEntity<Void> addPreLoan(@CookieValue(TokenUtils.TOKEN_COOKIE_NAME) String token, @PathVariable("bookDescriptionId") int bookDescriptionId)
 	{
 		return feignProxy.addPreloan(token, bookDescriptionId);
+	}
+
+	@RequestMapping(value = "/preloan/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<Void> deletePreLoan(@CookieValue(TokenUtils.TOKEN_COOKIE_NAME) String token, @PathVariable("id") int id)
+	{
+		return feignProxy.deletePreLoan(token, id);
 	}
 }
