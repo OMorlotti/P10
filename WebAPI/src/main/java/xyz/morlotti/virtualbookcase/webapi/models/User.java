@@ -23,7 +23,7 @@ import xyz.morlotti.virtualbookcase.webapi.exceptions.APIInvalidValueException;
 @NoArgsConstructor
 @ToString
 @Entity(name = "USER")
-@Table(name = "USER", catalog = "virtualbookcase")
+@Table(name = "USER")
 public class User implements java.io.Serializable
 {
     public enum Sex
@@ -106,7 +106,7 @@ public class User implements java.io.Serializable
     private Integer id;
 
     @NotEmpty
-    @Column(name = "login", nullable = false, length = 64)
+    @Column(name = "login", unique = true, nullable = false, length = 64)
     private String login;
 
     // Peut être vide, voir plus bas

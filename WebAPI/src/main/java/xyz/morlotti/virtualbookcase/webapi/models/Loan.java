@@ -16,7 +16,7 @@ import static java.time.temporal.ChronoUnit.DAYS;
 @NoArgsConstructor
 @ToString
 @Entity(name = "LOAN")
-@Table(name = "LOAN", catalog = "virtualbookcase")
+@Table(name = "LOAN")
 public class Loan implements java.io.Serializable
 {
     @Id

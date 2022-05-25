@@ -37,6 +37,7 @@ public class AuthController
         @RequestParam("password") String password
     ) throws Exception
     {
+    System.out.println(login + " " + password);
         Authentication authentication = authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(login, password)
         );

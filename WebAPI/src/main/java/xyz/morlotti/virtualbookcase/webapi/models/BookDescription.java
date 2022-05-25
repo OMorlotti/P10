@@ -21,7 +21,7 @@ import org.springframework.data.annotation.CreatedDate;
 @NoArgsConstructor
 @ToString
 @Entity(name = "BOOKDESCRIPTION")
-@Table(name = "BOOKDESCRIPTION", catalog = "virtualbookcase")
+@Table(name = "BOOKDESCRIPTION")
 public class BookDescription implements java.io.Serializable
 {
     @Id
@@ -53,7 +53,6 @@ public class BookDescription implements java.io.Serializable
     @Column(name = "editionNumber", nullable = false)
     private Integer editionNumber;
 
-    @Length(min = 4, max = 4, message = "L'année d'édition doit compter 4 chiffres")
     @Column(name = "editionYear", nullable = false, columnDefinition = "YEAR")
     private Integer editionYear;
 
