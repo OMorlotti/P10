@@ -98,6 +98,7 @@ public class Book implements java.io.Serializable
     ////////
 
     @JsonIgnore
+    @ToString.Exclude
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "book")
     private Set<Loan> loans;
 }

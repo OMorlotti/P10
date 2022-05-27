@@ -111,6 +111,7 @@ public class User implements java.io.Serializable
 
     // Peut être vide, voir plus bas
     // Pour ne pas exposer le password lors d'un GET
+    @ToString.Exclude
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "password", nullable = false, length = 64)
     private String password;
@@ -186,10 +187,12 @@ public class User implements java.io.Serializable
 
     ////////
 
+    @ToString.Exclude
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     private Set<Loan> loans;
 
+    @ToString.Exclude
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     private Set<PreLoan> preLoans;

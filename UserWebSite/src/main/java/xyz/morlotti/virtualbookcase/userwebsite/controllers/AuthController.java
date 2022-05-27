@@ -47,7 +47,7 @@ public class AuthController
 		catch(Exception e)
 		{
 			model.addAttribute("messageType", "danger");
-			model.addAttribute("message", "Login ou mot de passe invalide.");
+			model.addAttribute("message", "Login ou mot de passe invalide ou erreur interne (" + e.getMessage() + ")");
 
 			return "login";
 		}

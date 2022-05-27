@@ -46,7 +46,6 @@ public class PreLoanServiceImpl implements PreLoanService
 
 	public PreLoan addPreLoan(int bookDescriptionId, int userId)
 	{
-		System.out.println(">>>>>>> " + bookDescriptionId + " " + userId);
 		/*------------------------------------------------------------------------------------------------------------*/
 
 		Optional<BookDescription> optional1 = bookDescriptionDAO.findById(bookDescriptionId);
