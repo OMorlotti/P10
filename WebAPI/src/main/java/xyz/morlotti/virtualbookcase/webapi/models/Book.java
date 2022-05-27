@@ -86,7 +86,7 @@ public class Book implements java.io.Serializable
         this.condition = condition.toCode();
     }
 
-    @Column(name = "available", nullable = false)
+    @Column(name = "available", nullable = false, columnDefinition = "INT DEFAULT 1")
     private boolean available;
 
     @CreatedDate
