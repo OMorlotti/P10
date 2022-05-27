@@ -14,7 +14,9 @@ public interface LoanService
 
 	public Loan addLoan(Loan genre);
 
-	public Loan updateLoan(int id, Loan genre);
+	public Loan updateLoan(int id, Loan loan);
+
+	public Loan extendLoan(Loan loan);
 
 	public void deleteLoan(int id);
 }

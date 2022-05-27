@@ -92,14 +92,7 @@ public class LoanController
 	{
 		Loan loan = getLoan(id, authentication);
 
-		if(!"ASK_EXTENSION".equals(loan.getState()))
-		{
-			throw new APINotAuthorizedException("This loan is not available for being extended");
-		}
-
-		loan.setExtensionAsked(true);
-
-		Loan newLoan = loanService.updateLoan(id, loan);
+		Loan newLoan = loanService.extendLoan(loan);
 
 		URI location = ServletUriComponentsBuilder
            .fromCurrentRequest()
