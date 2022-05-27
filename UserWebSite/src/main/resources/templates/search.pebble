@@ -134,7 +134,7 @@ function addPreLoan(button, bookDescriptionId)
         url: '/preloan/' + bookDescriptionId,
         method: 'POST'
     }).done(() => {
-        $(button).prop('disabled', true);
+        $(button).prop('disabled', true).html('Pré-réservé par moi-même');
         alert('Pré-réservation effectuée !');
     }).fail(() => {
         alert('Erreur !');
