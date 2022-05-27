@@ -4,6 +4,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import xyz.morlotti.virtualbookcase.webapi.exceptions.APINotAuthorizedException;
+import xyz.morlotti.virtualbookcase.webapi.exceptions.APINotFoundException;
 import xyz.morlotti.virtualbookcase.webapi.models.Book;
 import xyz.morlotti.virtualbookcase.webapi.models.Loan;
 import xyz.morlotti.virtualbookcase.webapi.daos.BookDAO;
@@ -74,15 +76,38 @@ public class LoanServiceImpl implements LoanService
 
 	public Loan updateLoan(int id, Loan loan)
 	{
-		Loan existingLoan = getLoan(id).get();
+		Optional<Loan> optional = getLoan(id);
 
-		existingLoan.setComment(loan.getComment());
+		if(optional.isPresent())
+		{
+			Loan existingLoan = getLoan(id).get();
 
-		existingLoan.setLoanEndDate(loan.getLoanEndDate());
+			existingLoan.setComment(loan.getComment());
 
-		existingLoan.setExtensionAsked(loan.getExtensionAsked());
+			existingLoan.setLoanEndDate(loan.getLoanEndDate());
 
-		return addLoan(existingLoan);
+			existingLoan.setExtensionAsked(loan.getExtensionAsked());
+
+			return addLoan(existingLoan);
+		}
+		else
+		{
+			throw new APINotFoundException("Loan " + id + "not found");
+		}
+	}
+
+	public Loan extendLoan(Loan existingLoan)
+	{
+		if("ASK_EXTENSION".equals(existingLoan.getState()))
+		{
+			existingLoan.setExtensionAsked(true);
+
+			return addLoan(existingLoan);
+		}
+		else
+		{
+			throw new APINotAuthorizedException("This loan is not available for being extended");
+		}
 	}
 
 	public void deleteLoan(int id)

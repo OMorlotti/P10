@@ -6,15 +6,17 @@ import xyz.morlotti.virtualbookcase.webapi.models.Loan;
 
 public interface LoanService
 {
-	Iterable<Loan> listLoans();
+	public Iterable<Loan> listLoans();
 
-	Iterable<Loan> listLoansInLate();
+	public Iterable<Loan> listLoansInLate();
 
-	Optional<Loan> getLoan(int id);
+	public Optional<Loan> getLoan(int id);
 
-	Loan addLoan(Loan genre);
+	public Loan addLoan(Loan genre);
 
-	Loan updateLoan(int id, Loan genre);
+	public Loan updateLoan(int id, Loan loan);
 
-	void deleteLoan(int id);
+	public Loan extendLoan(Loan loan);
+
+	public void deleteLoan(int id);
 }
