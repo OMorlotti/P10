@@ -1,5 +1,9 @@
 package xyz.morlotti.virtualbookcase.userwebsite.security;
 
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
@@ -39,13 +43,15 @@ public class TokenUtils
 
 	public UserInfo getUserInfoFromJwtToken(String token)
 	{
-		if(token != null && token.startsWith("Token:"))
+		token = URLDecoder.decode(token, StandardCharsets.UTF_8);
+
+		if(token != null && (token.startsWith("Bearer ") || token.startsWith("Bearer+")))
 		{
 			Claims body;
 
 			try
 			{
-				body = Jwts.parserBuilder().setSigningKey(jwtSecret).build().parseClaimsJws(token.substring(6)).getBody();
+				body = Jwts.parserBuilder().setSigningKey(jwtSecret).build().parseClaimsJws(token.substring(7)).getBody();
 
 				/**/
 
@@ -75,7 +81,7 @@ public class TokenUtils
 
 	public static void createTokenCookie(HttpServletResponse httpServletResponse, String token)
 	{
-		Cookie cookie = new Cookie(TOKEN_COOKIE_NAME, token);
+		Cookie cookie = new Cookie(TOKEN_COOKIE_NAME, URLEncoder.encode(token, StandardCharsets.UTF_8));
 		cookie.setMaxAge(60 * 60 * 24 * 30);
 		cookie.setPath("/");
 
