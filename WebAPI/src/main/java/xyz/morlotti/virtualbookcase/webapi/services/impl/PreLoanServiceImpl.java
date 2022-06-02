@@ -3,6 +3,8 @@ package xyz.morlotti.virtualbookcase.webapi.services.impl;
 import java.util.Optional;
 import java.time.LocalDate;
 
+import javax.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -19,6 +21,7 @@ import xyz.morlotti.virtualbookcase.webapi.exceptions.APIInvalidValueException;
 import xyz.morlotti.virtualbookcase.webapi.services.interfaces.PreLoanService;
 
 @Service
+@Transactional
 public class PreLoanServiceImpl implements PreLoanService
 {
 	@Autowired

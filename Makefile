@@ -3,6 +3,11 @@ api:
 	mvn clean package
 	cd WebAPI/target ; java -jar VirtualBookcaseWebAPI-*.jar
 
+.PHONY: api-test-mode
+api-test-mode:
+	mvn clean package
+	cd WebAPI/target ; java  -Dspring.datasource.url=jdbc:mysql://localhost:8889/virtualbookcase_test?serverTimezone=UTC -jar VirtualBookcaseWebAPI-*.jar
+
 .PHONY: site
 site:
 	mvn clean package

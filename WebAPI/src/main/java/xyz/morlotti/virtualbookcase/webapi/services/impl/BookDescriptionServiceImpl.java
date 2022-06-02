@@ -1,5 +1,9 @@
 package xyz.morlotti.virtualbookcase.webapi.services.impl;
 
+import java.util.Optional;
+
+import javax.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +14,8 @@ import xyz.morlotti.virtualbookcase.webapi.exceptions.APINotDeletedException;
 import xyz.morlotti.virtualbookcase.webapi.exceptions.APINotModifiedException;
 import xyz.morlotti.virtualbookcase.webapi.services.interfaces.BookDescriptionService;
 
-import java.util.Optional;
-
 @Service
+@Transactional
 public class BookDescriptionServiceImpl implements BookDescriptionService
 {
 	@Autowired

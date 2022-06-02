@@ -17,9 +17,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-@SpringBootTest(classes = MyApplication.class)
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@TestPropertySource(locations = "/DaoTest.properties")
+//@SpringBootTest(classes = MyApplication.class)
+//@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+//@TestPropertySource(locations = "/DaoTest.properties")
 public class DaoTest
 {
 	@Autowired
@@ -39,7 +39,7 @@ public class DaoTest
 
 	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-	@BeforeAll
+	//@BeforeAll
 	public void init()
 	{
 		User user1 = new User();
@@ -139,13 +139,13 @@ public class DaoTest
 		bookService.addBook(book2);
 	}
 
-	@Test
+	//@Test
 	public void bookDescriptionServiceNotNull()
 	{
 		Assertions.assertNotNull(bookDescriptionService);
 	}
 
-	@Test
+	//@Test
 	public void userNotEmptyTest()
 	{
 		List<User> list = (List<User>) userService.listUsers();
@@ -153,7 +153,7 @@ public class DaoTest
 		Assertions.assertFalse(list.isEmpty());
 	}
 
-	@Test
+	//@Test
 	public void bookDescriptionNotEmptyTest()
 	{
 		List<BookDescription> list = (List<BookDescription>) bookDescriptionService.listBookDescriptions();
@@ -161,7 +161,7 @@ public class DaoTest
 		Assertions.assertFalse(list.isEmpty());
 	}
 
-	@Test
+	//@Test
 	public void bookNotEmptyTest()
 	{
 		List<Book> list = (List<Book>) bookService.listBooks();
