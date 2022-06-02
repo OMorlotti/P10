@@ -2,6 +2,7 @@ package xyz.morlotti.virtualbookcase.webapi.services.interfaces;
 
 import java.util.Optional;
 
+import xyz.morlotti.virtualbookcase.webapi.controllers.beans.APILoan;
 import xyz.morlotti.virtualbookcase.webapi.models.Loan;
 
 public interface LoanService
@@ -12,9 +13,9 @@ public interface LoanService
 
 	public Optional<Loan> getLoan(int id);
 
-	public Loan addLoan(Loan genre);
+	public Loan addLoan(APILoan apiLoan);
 
-	public Loan updateLoan(int id, Loan loan);
+	public Loan updateLoan(int id, APILoan apiLoan);
 
 	public Loan extendLoan(Loan loan);
 

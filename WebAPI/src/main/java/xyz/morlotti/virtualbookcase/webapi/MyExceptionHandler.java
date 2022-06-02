@@ -1,5 +1,6 @@
 package xyz.morlotti.virtualbookcase.webapi;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Map;
 import java.io.IOException;
 import java.util.stream.Collectors;
@@ -24,6 +25,12 @@ public class MyExceptionHandler extends ResponseEntityExceptionHandler
 	public void springHandleUsernameNotFound(HttpServletResponse response) throws IOException
 	{
 		response.sendError(HttpStatus.UNAUTHORIZED.value());
+	}
+
+	@ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+	public void springIntegrityConstraintViolation(HttpServletResponse response) throws IOException
+	{
+		response.sendError(HttpStatus.BAD_REQUEST.value());
 	}
 
 	@Override
