@@ -80,7 +80,10 @@ public class PreLoanServiceImpl implements PreLoanService
 			throw new APIInvalidValueException("the book description id '" + bookDescriptionId + "' is available for loaning");
 		}
 
-		if(bookDescription.getNumberOfPreLoans() >= 2 * bookDescription.getNumberOfBooks())
+		int numberOfPreLoans = bookDescription.getNumberOfPreLoans();
+		int numberOfBooks = bookDescription.getNumberOfBooks();
+
+		if(numberOfPreLoans >= 2 * numberOfBooks)
 		{
 			throw new APIInvalidValueException("the book description id '" + bookDescriptionId + "' is no longer available for pre-loaning");
 		}
