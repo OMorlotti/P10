@@ -17,7 +17,9 @@ import static java.time.temporal.ChronoUnit.DAYS;
 @NoArgsConstructor
 @ToString
 @Entity(name = "PRELOAN")
-@Table(name = "PRELOAN", catalog = "virtualbookcase")
+@Table(name = "PRELOAN", uniqueConstraints = {
+	@UniqueConstraint(columnNames = {"userFK", "bookDescriptionFK"})
+})
 public class PreLoan implements java.io.Serializable
 {
 	@Id

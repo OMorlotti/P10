@@ -43,7 +43,7 @@ public class AuthController
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        return "Token:" + jwtUtils.generateJwtToken(authentication);
+        return "Bearer " + jwtUtils.generateJwtToken(authentication);
     }
 
     @RequestMapping(path = "/auth/remind-password", method = RequestMethod.GET)

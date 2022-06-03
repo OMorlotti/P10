@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: May 27, 2022 at 02:49 PM
+-- Generation Time: Jun 03, 2022 at 12:22 PM
 -- Server version: 5.7.26
 -- PHP Version: 7.4.2
 
@@ -11,7 +11,7 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 --
--- Database: `virtualbookcase`
+-- Database: `virtualbookcase_test`
 --
 
 -- --------------------------------------------------------
@@ -22,7 +22,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `book` (
   `id` int(11) NOT NULL,
-  `available` bit(1) NOT NULL,
+  `available` int(11) NOT NULL DEFAULT '1',
   `cond` int(11) NOT NULL DEFAULT '0',
   `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `local_id` varchar(64) NOT NULL,
@@ -34,21 +34,9 @@ CREATE TABLE `book` (
 --
 
 INSERT INTO `book` (`id`, `available`, `cond`, `created`, `local_id`, `book_descriptionfk`) VALUES
-(1, b'0', 0, '2021-02-10 00:34:52', 'Z14', 1),
-(2, b'1', 0, '2021-02-10 00:34:52', 'Z14', 1),
-(3, b'0', 0, '2021-03-09 13:57:10', '3c', 5),
-(4, b'1', 0, '2021-02-10 00:34:52', 'Z14', 1),
-(5, b'1', 0, '2021-02-10 00:34:52', 'Z14', 1),
-(6, b'1', 0, '2021-03-09 13:57:10', '3c', 5),
-(7, b'1', 0, '2021-02-10 00:34:52', 'Z14', 1),
-(8, b'1', 0, '2021-02-10 00:34:52', 'Z14', 5),
-(9, b'1', 0, '2021-03-09 13:57:10', '3c', 5),
-(10, b'0', 0, '2021-03-09 14:05:20', '4F', 2),
-(11, b'0', 0, '2021-03-09 14:05:20', '4F', 2),
-(13, b'0', 0, '2021-03-09 14:05:20', '4F', 2),
-(14, b'1', 0, '2021-03-09 14:09:25', '7P', 4),
-(15, b'1', 0, '2021-03-09 14:09:25', '7P', 4),
-(16, b'1', 0, '2021-03-09 14:09:25', '7P', 4);
+(1, 0, 0, '2022-05-29 13:58:32', '123ABC', 1),
+(2, 0, 0, '2022-05-29 13:58:32', '123ABC', 1),
+(3, 1, 0, '2022-05-29 13:58:32', '123ABC', 2);
 
 -- --------------------------------------------------------
 
@@ -76,11 +64,8 @@ CREATE TABLE `bookdescription` (
 --
 
 INSERT INTO `bookdescription` (`id`, `author_firstname`, `author_lastname`, `comment`, `created`, `edition_number`, `edition_year`, `editor`, `format`, `genre`, `isbn`, `title`) VALUES
-(1, 'Claude', 'Abromont', NULL, '2021-02-09 20:59:53', 1, 2013, 'Fayard', 'Broché', 'Education', '9782213655727', 'Guide des formes de la musique occidentale'),
-(2, 'Eriko', 'Sato', NULL, '2021-03-09 13:28:16', 1, 2008, 'Editions First', 'Livre de poche', 'Langues', '9782754006255', 'Le japonais pour les nuls'),
-(3, 'Jean', 'Tulard', 'Association pour la sauvegarde des livres anciens de la bibliothèque de la Cour de cassation', '2021-03-09 13:28:16', 1, 1995, 'Ateliers Gustave Gernez', 'Agrafé', 'Histoire', '1234567891012', 'Ombres et Lumières de la Campagne d\'Egypte'),
-(4, 'Gilbert', 'Guilleminault', NULL, '2021-03-09 13:36:48', 1, 1980, 'Julliard', 'broché', 'histoire', '2260001807', 'Le roman vrai de la Vème République. L\'Etat, c\'est lui. 1959-1960.'),
-(5, 'Wladyslaw', 'Szpilman', NULL, '2021-03-09 13:40:46', 3, 2003, 'Robert Laffont', 'Poche', 'Témoignage', '9782266130950', 'Le pianiste');
+(1, 'Hergé', 'Hergé', 'Blabla', '2022-05-29 13:58:32', 1, 2012, 'Casterman', '24x32', 'BD-enfant', '9781484469064', 'Tintin et le Lotus bleu'),
+(2, 'Peyo', 'Peyo', 'Blabla', '2022-05-29 13:58:32', 2, 2020, 'Dupuis', '24x32', 'BD-enfant', '9782800132884', 'Les Schtroumpfs Olympiques');
 
 -- --------------------------------------------------------
 
@@ -91,24 +76,12 @@ INSERT INTO `bookdescription` (`id`, `author_firstname`, `author_lastname`, `com
 CREATE TABLE `loan` (
   `id` int(11) NOT NULL,
   `comment` text,
-  `extension_asked` bit(1) NOT NULL,
+  `extension_asked` bit(1) NOT NULL DEFAULT b'0',
   `loan_end_date` date DEFAULT NULL,
-  `loan_start_date` date NOT NULL,
   `bookfk` int(11) NOT NULL,
-  `userfk` int(11) NOT NULL
+  `userfk` int(11) NOT NULL,
+  `loan_start_date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `loan`
---
-
-INSERT INTO `loan` (`id`, `comment`, `extension_asked`, `loan_end_date`, `loan_start_date`, `bookfk`, `userfk`) VALUES
-(12, NULL, b'0', NULL, '2022-05-05', 10, 1),
-(13, NULL, b'0', NULL, '2022-05-13', 13, 2),
-(14, NULL, b'0', NULL, '2022-04-22', 11, 4),
-(15, NULL, b'0', NULL, '2022-04-01', 3, 1),
-(16, NULL, b'0', NULL, '2022-05-27', 1, 1),
-(17, NULL, b'0', '2022-03-08', '2022-03-02', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -153,10 +126,10 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `birthdate`, `city`, `country`, `created`, `email`, `firstname`, `lastname`, `login`, `membership`, `password`, `postal_code`, `role`, `sex`, `street_name`, `street_nb`) VALUES
-(1, '1983-02-05', 'Grenoble', 'France', '2021-02-10 13:15:47', 'harry.potter@gmail.com', 'Harry', 'Potter', 'harry', '2021-02-10', '00000', 38000, 1, 1, 'rue de Poudlard', '1'),
-(2, '1985-02-09', 'Lyon', 'France', '2021-03-08 12:47:04', 'hermione.granger@gmail.com', 'Hermione', 'Granger', 'hermione', '2021-03-08', '00000', 69007, 2, 0, 'rue de Poudlard', '2'),
-(3, '1981-05-05', 'Lozann', 'France', '2021-03-08 13:21:51', 'minerva.mccgonagall@poudlard.fr', 'Minerva', 'McGonagall', 'minerva', '2021-01-03', '00000', 69320, 2, 0, 'route du paradis', '3'),
-(4, '1932-07-31', 'Paris', 'France', '2021-03-08 13:23:57', 'a.dumbledore@poudlard.fr', 'Albus', 'Dumbledore', 'albus', '2020-04-02', '00000', 75016, 2, 1, 'rue du Faubourg Saint Honoré', '12');
+(1, '1953-08-28', 'Londres', 'UK', '2022-05-29 13:58:32', 'albus.dumbledor@poudlard.uk', 'Albus', 'Dumbledor', 'albus', '2001-02-05', '$2a$10$XEiBzaZLVM7ilRhFb0rgwOppqXxoP//r8xZfE.hWTDhrasYlamtEK', 38000, 0, 1, 'route de Poudlard', '28'),
+(2, '1995-05-18', 'Londres', 'UK', '2022-05-29 13:58:32', 'hermione.granger@poudlard.uk', 'Hermione', 'Granger', 'hermione', '2010-02-05', '$2a$10$wj5d6fx7FvxALpwLusb.OeB3IQGODyJLg8sJrHoUm1wmCCkufbbma', 38000, 1, 1, 'route de Poudlard', '28'),
+(3, '1997-07-12', 'londres', 'UK', '2022-06-02 15:25:54', 'harry.p@gmail.com', 'Harry', 'Potter', 'harry', '2022-03-10', '00000', 12324, 2, 0, 'rue des Embrumes', '2'),
+(4, '1935-07-12', 'londres', 'UK', '2022-06-02 15:25:54', 'minerva.m@gmail.com', 'Minerva', 'McGonagall', 'minerva', '2022-03-10', '00000', 12324, 2, 0, 'rue des Embrumes', '23');
 
 --
 -- Indexes for dumped tables
@@ -206,25 +179,25 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `book`
 --
 ALTER TABLE `book`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `bookdescription`
 --
 ALTER TABLE `bookdescription`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `loan`
 --
 ALTER TABLE `loan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT for table `preloan`
 --
 ALTER TABLE `preloan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `user`

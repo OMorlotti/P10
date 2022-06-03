@@ -21,10 +21,10 @@ import xyz.morlotti.virtualbookcase.webapi.exceptions.APIInvalidValueException;
 @NoArgsConstructor
 @ToString
 @Entity(name = "BOOK")
-@Table(name = "BOOK", catalog = "virtualbookcase")
+@Table(name = "BOOK")
 public class Book implements java.io.Serializable
 {
-    private enum Condition
+    public enum Condition
     {
         NEW("NEW", 0), GOOD("GOOD", 1), BAD("BAD", 2), DEAD("DEAD", 3), TRASHED("TRASHED", 4);
 
@@ -98,6 +98,7 @@ public class Book implements java.io.Serializable
     ////////
 
     @JsonIgnore
+    @ToString.Exclude
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "book")
     private Set<Loan> loans;
 }

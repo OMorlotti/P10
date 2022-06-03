@@ -7,6 +7,7 @@ import javax.persistence.*;
 import lombok.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.data.annotation.CreatedDate;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
@@ -16,7 +17,9 @@ import static java.time.temporal.ChronoUnit.DAYS;
 @NoArgsConstructor
 @ToString
 @Entity(name = "LOAN")
-@Table(name = "LOAN", catalog = "virtualbookcase")
+@Table(name = "LOAN", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"userFK", "bookFK"})
+})
 public class Loan implements java.io.Serializable
 {
     @Id
@@ -39,7 +42,7 @@ public class Loan implements java.io.Serializable
     @Column(name = "loanEndDate", nullable = true)
     private LocalDate loanEndDate;
 
-    @Column(name = "extensionAsked", nullable = false)
+    @Column(name = "extensionAsked", nullable = false, columnDefinition = "INT DEFAULT 0")
     private Boolean extensionAsked;
 
     @Column(name = "comment", columnDefinition = "TEXT")

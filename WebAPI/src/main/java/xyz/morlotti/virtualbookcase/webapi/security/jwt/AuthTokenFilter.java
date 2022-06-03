@@ -1,5 +1,6 @@
 package xyz.morlotti.virtualbookcase.webapi.security.jwt;
 
+import java.awt.desktop.SystemEventListener;
 import java.io.IOException;
 
 import javax.servlet.FilterChain;
@@ -62,9 +63,9 @@ public class AuthTokenFilter extends OncePerRequestFilter
 	{
 		String headerAuth = request.getHeader("Authorization");
 
-		if(StringUtils.hasText(headerAuth) && headerAuth.startsWith("Token:"))
+		if(StringUtils.hasText(headerAuth) && (headerAuth.startsWith("Bearer ") || headerAuth.startsWith("Bearer+")))
 		{
-			return headerAuth.substring(6);
+			return headerAuth.substring(7);
 		}
 		else
 		{

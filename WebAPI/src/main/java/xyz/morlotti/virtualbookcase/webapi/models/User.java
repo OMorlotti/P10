@@ -23,7 +23,7 @@ import xyz.morlotti.virtualbookcase.webapi.exceptions.APIInvalidValueException;
 @NoArgsConstructor
 @ToString
 @Entity(name = "USER")
-@Table(name = "USER", catalog = "virtualbookcase")
+@Table(name = "USER")
 public class User implements java.io.Serializable
 {
     public enum Sex
@@ -106,11 +106,12 @@ public class User implements java.io.Serializable
     private Integer id;
 
     @NotEmpty
-    @Column(name = "login", nullable = false, length = 64)
+    @Column(name = "login", unique = true, nullable = false, length = 64)
     private String login;
 
     // Peut être vide, voir plus bas
     // Pour ne pas exposer le password lors d'un GET
+    @ToString.Exclude
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "password", nullable = false, length = 64)
     private String password;
@@ -186,10 +187,12 @@ public class User implements java.io.Serializable
 
     ////////
 
+    @ToString.Exclude
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     private Set<Loan> loans;
 
+    @ToString.Exclude
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     private Set<PreLoan> preLoans;

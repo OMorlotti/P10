@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import xyz.morlotti.virtualbookcase.webapi.controllers.beans.APILoan;
 import xyz.morlotti.virtualbookcase.webapi.models.Loan;
 import xyz.morlotti.virtualbookcase.webapi.models.User;
 import xyz.morlotti.virtualbookcase.webapi.services.interfaces.LoanService;
@@ -56,7 +57,7 @@ public class LoanController
 
 	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('EMPLOYEE')")
 	@RequestMapping(value = "/loan", method = RequestMethod.POST)
-	public ResponseEntity<Void> addLoan(@Valid @RequestBody Loan loan)
+	public ResponseEntity<Void> addLoan(@Valid @RequestBody APILoan loan)
 	{
 		Loan newLoan = loanService.addLoan(loan);
 
@@ -72,7 +73,7 @@ public class LoanController
 
 	@PreAuthorize("hasAuthority('ADMIN') or hasAuthority('EMPLOYEE')")
 	@RequestMapping(value = "/loan/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> updateLoan(@PathVariable("id") int id, @Valid @RequestBody Loan loan)
+	public ResponseEntity<Void> updateLoan(@PathVariable("id") int id, @Valid @RequestBody APILoan loan)
 	{
 		Loan newLoan = loanService.updateLoan(id, loan);
 

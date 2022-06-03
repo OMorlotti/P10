@@ -1,22 +1,29 @@
 package xyz.morlotti.virtualbookcase.webapi.services.impl;
 
+import java.time.LocalDate;
+import java.util.Optional;
+
+import javax.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import xyz.morlotti.virtualbookcase.webapi.controllers.beans.APILoan;
+import xyz.morlotti.virtualbookcase.webapi.daos.UserDAO;
 import xyz.morlotti.virtualbookcase.webapi.exceptions.APINotAuthorizedException;
 import xyz.morlotti.virtualbookcase.webapi.exceptions.APINotFoundException;
 import xyz.morlotti.virtualbookcase.webapi.models.Book;
 import xyz.morlotti.virtualbookcase.webapi.models.Loan;
 import xyz.morlotti.virtualbookcase.webapi.daos.BookDAO;
 import xyz.morlotti.virtualbookcase.webapi.daos.LoanDAO;
+import xyz.morlotti.virtualbookcase.webapi.models.User;
 import xyz.morlotti.virtualbookcase.webapi.services.interfaces.LoanService;
 import xyz.morlotti.virtualbookcase.webapi.exceptions.APINotModifiedException;
 import xyz.morlotti.virtualbookcase.webapi.exceptions.APINotDeletedException;
 
-import java.util.Optional;
-
 @Service
+@Transactional
 public class LoanServiceImpl implements LoanService
 {
 	@Autowired
@@ -24,6 +31,9 @@ public class LoanServiceImpl implements LoanService
 
 	@Autowired
 	private BookDAO bookDAO;
+
+	@Autowired
+	private UserDAO userDAO;
 
 	public Iterable<Loan> listLoans()
 	{
@@ -46,35 +56,17 @@ public class LoanServiceImpl implements LoanService
 		return optional;
 	}
 
-	public Loan addLoan(Loan loan)
+	public Loan addLoan(APILoan apiLoan)
 	{
-		Loan newLoan = loanDAO.save(loan);
+		User user = userDAO.findById(apiLoan.getUserId()).orElseThrow(() -> new APINotFoundException("Invalid user Id"));
+		Book book = bookDAO.findById(apiLoan.getBookId()).orElseThrow(() -> new APINotFoundException("Invalid book Id"));
 
-		if(newLoan == null)
-		{
-			throw new APINotModifiedException("Loan not inserted");
-		}
+		Loan loan = new Loan(null, user, book, LocalDate.now(), null, false, null);
 
-		/* Update the book's availability */
-
-		Book book = loan.getBook();
-
-		if(book.isAvailable() != (loan.getLoanEndDate() != null))
-		{
-			book.setAvailable(loan.getLoanEndDate() != null);
-
-			Book newBook = bookDAO.save(book);
-
-			if(newBook == null)
-			{
-				throw new APINotModifiedException("Book not updated");
-			}
-		}
-
-		return newLoan;
+		return saveLoan(loan);
 	}
 
-	public Loan updateLoan(int id, Loan loan)
+	public Loan updateLoan(int id, APILoan apiLoan)
 	{
 		Optional<Loan> optional = getLoan(id);
 
@@ -82,13 +74,15 @@ public class LoanServiceImpl implements LoanService
 		{
 			Loan existingLoan = getLoan(id).get();
 
-			existingLoan.setComment(loan.getComment());
+			existingLoan.setLoanStartDate(apiLoan.getLoanStartDate());
 
-			existingLoan.setLoanEndDate(loan.getLoanEndDate());
+			existingLoan.setLoanEndDate(apiLoan.getLoanEndDate());
 
-			existingLoan.setExtensionAsked(loan.getExtensionAsked());
+			existingLoan.setExtensionAsked(apiLoan.getExtensionAsked());
 
-			return addLoan(existingLoan);
+			existingLoan.setComment(apiLoan.getComment());
+
+			return saveLoan(existingLoan);
 		}
 		else
 		{
@@ -102,12 +96,44 @@ public class LoanServiceImpl implements LoanService
 		{
 			existingLoan.setExtensionAsked(true);
 
-			return addLoan(existingLoan);
+			return saveLoan(existingLoan);
 		}
 		else
 		{
 			throw new APINotAuthorizedException("This loan is not available for being extended");
 		}
+	}
+
+	private Loan saveLoan(Loan loan)
+	{
+		/*------------------------------------------------------------------------------------------------------------*/
+
+		Loan newLoan = loanDAO.save(loan);
+
+		if(newLoan == null)
+		{
+			throw new APINotModifiedException("Loan not inserted");
+		}
+
+		/*------------------------------------------------------------------------------------------------------------*/
+
+		Book book = loan.getBook();
+
+		if(book.isAvailable() != (newLoan.getLoanEndDate() != null))
+		{
+			book.setAvailable(newLoan.getLoanEndDate() != null);
+
+			Book newBook = bookDAO.save(book);
+
+			if(newBook == null)
+			{
+				throw new APINotModifiedException("Book not updated");
+			}
+		}
+
+		/*------------------------------------------------------------------------------------------------------------*/
+
+		return newLoan;
 	}
 
 	public void deleteLoan(int id)

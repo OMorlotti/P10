@@ -21,7 +21,7 @@ import org.springframework.data.annotation.CreatedDate;
 @NoArgsConstructor
 @ToString
 @Entity(name = "BOOKDESCRIPTION")
-@Table(name = "BOOKDESCRIPTION", catalog = "virtualbookcase")
+@Table(name = "BOOKDESCRIPTION")
 public class BookDescription implements java.io.Serializable
 {
     @Id
@@ -53,7 +53,6 @@ public class BookDescription implements java.io.Serializable
     @Column(name = "editionNumber", nullable = false)
     private Integer editionNumber;
 
-    @Length(min = 4, max = 4, message = "L'année d'édition doit compter 4 chiffres")
     @Column(name = "editionYear", nullable = false, columnDefinition = "YEAR")
     private Integer editionYear;
 
@@ -77,6 +76,7 @@ public class BookDescription implements java.io.Serializable
     ////////
 
     @JsonIgnore
+    @ToString.Exclude
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "bookDescription")
     private Set<Book> books;
 
@@ -87,8 +87,25 @@ public class BookDescription implements java.io.Serializable
     }
 
     @JsonIgnore
+    @ToString.Exclude
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "bookDescription")
     private Set<PreLoan> preLoans;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    public int getNumberOfLoans()
+    {
+        int numberOfLoans = 0;
+
+        for(Book book: books)
+        {
+            if(!book.isAvailable())
+            {
+                numberOfLoans += 1;
+            }
+        }
+
+        return numberOfLoans;
+    }
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     public int getNumberOfPreLoans()
