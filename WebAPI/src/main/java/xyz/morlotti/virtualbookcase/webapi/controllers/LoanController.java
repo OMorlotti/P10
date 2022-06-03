@@ -122,7 +122,7 @@ public class LoanController
 
 		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-		if(loan.getUser().getId() != userDetails.getId() && userDetails.getAuthority() == User.Role.USER)
+		if(!loan.getUser().getId().equals(userDetails.getId()) && userDetails.getAuthority() == User.Role.USER)
 		{
 			throw new APINotAuthorizedException("The current user is not the borrower");
 		}

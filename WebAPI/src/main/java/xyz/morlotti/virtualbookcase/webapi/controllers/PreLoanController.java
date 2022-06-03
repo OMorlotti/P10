@@ -73,7 +73,7 @@ public class PreLoanController
 				throw new APINotFoundException("cannot find preloan '" + id + "'");
 			}
 
-			if(optional.get().getUser().getId() != userDetails.getId())
+			if(!optional.get().getUser().getId().equals(userDetails.getId()))
 			{
 				throw new APINotAuthorizedException("not authorized to cancel preloan '" + id + "'");
 			}

@@ -1,9 +1,9 @@
-.PHONY: api
+.PHONY: api-mode-prod
 api:
 	mvn clean package
 	cd WebAPI/target ; java -jar VirtualBookcaseWebAPI-*.jar
 
-.PHONY: api-test-mode
+.PHONY: api-mode-test
 api-test-mode:
 	mvn clean package
 	cd WebAPI/target ; java  -Dspring.datasource.url=jdbc:mysql://localhost:8889/virtualbookcase_test?serverTimezone=UTC -jar VirtualBookcaseWebAPI-*.jar
@@ -21,7 +21,7 @@ batch:
 api-test:
 	mvn test
 
-api-sonar:
+api-test-sonar:
 	cd WebAPI && mvn test sonar:sonar \
       -Dsonar.projectKey=P10 \
       -Dsonar.host.url=https://sonar.odier.xyz \
