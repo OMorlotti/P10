@@ -1,16 +1,16 @@
-# Projet 7
+# Projet 10
 
 
 # Formation "Développeur d'application JAVA", OpenClassrooms.
 
-	Création d'un site de gestion de bibliothèque de la ville.
+	Améliorez le système d'information de la bibliothèque
 
 
 ## Le projet :
 
 **Le source**<br/>
 
-https://github.com/OMorlotti/P7
+https://github.com/OMorlotti/P10
 
 **Le site web**<br/>
 Le but est de permettre aux usagers de suivre les prêts de leur ouvrages à travers une

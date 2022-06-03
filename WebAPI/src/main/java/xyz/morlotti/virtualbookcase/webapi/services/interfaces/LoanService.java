@@ -14,7 +14,13 @@ public interface LoanService
 
 	Loan addLoan(Loan genre);
 
+<<<<<<< HEAD
 	Loan updateLoan(int id, Loan genre);
+=======
+	public Loan updateLoan(int id, Loan loan);
+
+	public Loan extendLoan(Loan loan);
+>>>>>>> feature/ticket2
 
 	void deleteLoan(int id);
 }
