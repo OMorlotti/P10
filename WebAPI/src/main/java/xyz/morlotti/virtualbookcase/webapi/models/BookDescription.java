@@ -92,6 +92,22 @@ public class BookDescription implements java.io.Serializable
     private Set<PreLoan> preLoans;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    public int getNumberOfLoans()
+    {
+        int numberOfLoans = 0;
+
+        for(Book book: books)
+        {
+            if(!book.isAvailable())
+            {
+                numberOfLoans += 1;
+            }
+        }
+
+        return numberOfLoans;
+    }
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     public int getNumberOfPreLoans()
     {
         return preLoans.size();
