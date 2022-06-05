@@ -50,9 +50,9 @@ public class APITest
 	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 	@BeforeAll
-	public void init()
+	public void init() // Effectué avant les tests
 	{
-		try
+		try // Retire tous les Loans et PreLoans de tous les utilisateurs
 		{
 			for(User user: userService.listUsers())
 			{
@@ -66,7 +66,7 @@ public class APITest
 			System.exit(1);
 		}
 
-		try
+		try // Rend tous les livres disponibles
 		{
 			for(Book book: bookService.listBooks())
 			{
@@ -88,7 +88,7 @@ public class APITest
 	/*--------------------*/
 
 	@Test
-	public void bookDescriptionServiceNotNull()
+	public void servicesNotNull()
 	{
 		Assertions.assertNotNull(bookDescriptionService);
 		Assertions.assertNotNull(bookService);
