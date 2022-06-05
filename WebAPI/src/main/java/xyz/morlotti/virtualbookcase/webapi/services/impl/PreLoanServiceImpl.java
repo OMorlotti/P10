@@ -73,12 +73,16 @@ public class PreLoanServiceImpl implements PreLoanService
 
 		/*------------------------------------------------------------------------------------------------------------*/
 
+		/* Aucun exemplaire n'est disponible, nbOfAvailableBooks doit être à 0 */
+
 		long nbOfAvailableBooks = bookDescription.getBooks().stream().filter(x -> x.isAvailable()).count();
 
 		if(nbOfAvailableBooks != 0)
 		{
 			throw new APIInvalidValueException("the book description id '" + bookDescriptionId + "' is available for loaning");
 		}
+
+		/* Nombre de personnes qui réservent < 1/2 du nombre d’exemplaires empruntés */
 
 		int numberOfPreLoans = bookDescription.getNumberOfPreLoans();
 		int numberOfBooks = bookDescription.getNumberOfBooks();
